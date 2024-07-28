@@ -1,17 +1,20 @@
-import express from "express";
-const app = express();
-import { db } from "./db.js";
+import express from 'express'
+import indexRouter from './routes/index.js'
+import path from 'path'
+import ejs from 'ejs'
 
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+    
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-app.use(express.json())
+const PORT = process.env.PORT || 4000
 
-app.get("/", async (req, res) => {
-    const result = await db.query(`SELECT * FROM emp;`);
-    res.status(200).json(result);
-    //res.json({ info: "Node.js, Express, and Postgres API" });
-});
-
-
-app.listen(process.env.PORT, () => {
-    console.log(`App running on port ${process.env.PORT}.`);
-});
+express()
+    .use(express.static(path.join(__dirname, 'public')))
+    .use(express.json())
+    .engine("html", ejs.renderFile)
+    .set('views', 'views')
+    .set('view engine', 'html')
+    .use('/', indexRouter)
+    .listen(PORT, () => console.log(`Server is listening on http://localhost:${PORT}`));
