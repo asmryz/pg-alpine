@@ -69,6 +69,7 @@ router.get(`/api/recap/:rid`, async (req, res) => {
         res.status(500).send(err.message);
     }
 });
+// SELECT *,  ROUND((CAST(total AS FLOAT) * 100 / CAST(x AS FLOAT))::NUMERIC , 2) Per
 /*
 SELECT *,  ROUND((CAST(total AS FLOAT) * 100 / CAST(x AS FLOAT))::NUMERIC , 2) Per
 FROM (
